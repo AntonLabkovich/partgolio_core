@@ -1,4 +1,4 @@
-import { useLayoutEffect } from "react";
+import { useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
 import styles from "./BackgroundTheme.module.scss";
 import { useThemeStore } from "../../store/themeStore";
@@ -7,46 +7,45 @@ import moonIcon from "../../assets/images/themeIcon/moon.svg";
 
 const BackgroundTheme = () => {
   const { theme } = useThemeStore();
+  const hasMounted = useRef(false);
 
   useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
-      const screenWidth = window.innerWidth;
-      const screenHeight = window.innerHeight;
+    const sun = document.getElementById("sun-icon");
+    const moon = document.getElementById("moon-icon");
 
-      const sun = document.getElementById("sun-icon");
-      const moon = document.getElementById("moon-icon");
+    const activeIcon = theme === "light" ? sun : moon;
+    const inactiveIcon = theme === "light" ? moon : sun;
 
-      const activeIcon = theme === "light" ? sun : moon;
-      const inactiveIcon = theme === "light" ? moon : sun;
+    if (!hasMounted.current) {
+      if (activeIcon) gsap.set(activeIcon, { autoAlpha: 1 });
+      if (inactiveIcon) gsap.set(inactiveIcon, { autoAlpha: 0 });
+      hasMounted.current = true;
+      return;
+    }
 
-      if (inactiveIcon) {
-        gsap.to(inactiveIcon, {
-          duration: 0.8,
-          x: screenWidth,
-          y: -screenHeight,
-          autoAlpha: 0,
-          ease: "power2.in",
-        });
-      }
+    const screenWidth = window.innerWidth;
+    const screenHeight = window.innerHeight;
 
-      if (activeIcon) {
-        gsap.set(activeIcon, {
-          x: -screenWidth,
-          y: screenHeight,
-          autoAlpha: 0,
-        });
+    if (inactiveIcon) {
+      gsap.to(inactiveIcon, {
+        duration: 0.8,
+        x: screenWidth,
+        y: -screenHeight,
+        autoAlpha: 0,
+        ease: "power2.in",
+      });
+    }
 
-        gsap.to(activeIcon, {
-          duration: 0.8,
-          x: 0,
-          y: 0,
-          autoAlpha: 1,
-          ease: "power2.out",
-        });
-      }
-    });
-
-    return () => ctx.revert(); // очищаем анимацию при размонтировании
+    if (activeIcon) {
+      gsap.set(activeIcon, { x: -screenWidth, y: screenHeight, autoAlpha: 0 });
+      gsap.to(activeIcon, {
+        duration: 0.8,
+        x: 0,
+        y: 0,
+        autoAlpha: 1,
+        ease: "power2.out",
+      });
+    }
   }, [theme]);
 
   return (
