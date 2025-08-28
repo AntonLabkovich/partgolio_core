@@ -1,0 +1,85 @@
+@use "@/styles/variables"as v;
+
+/* ===========================
+   Theme Mixin
+   =========================== */
+@mixin theme($mode) {
+  @if $mode==dark {
+    background-color: v.$bg-color-dark;
+    color: v.$text-color-dark;
+  }
+
+  @else if $mode==light {
+    background-color: v.$bg-color-light;
+    color: v.$text-color-light;
+  }
+}
+
+/* ===========================
+     Flexbox Utilities
+     =========================== */
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===========================
+     Grid Utilities
+     =========================== */
+@mixin grid-center {
+  display: grid;
+  place-items: center;
+}
+
+/* ===========================
+     Transition Utilities
+     =========================== */
+@mixin transition($props: all, $time: 0.3s, $ease: ease-in-out) {
+  transition: $props $time $ease;
+}
+
+/* ===========================
+     Responsive Breakpoints
+     =========================== */
+$breakpoint-sm: 480px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+$breakpoint-xl: 1440px;
+
+@mixin respond-to($breakpoint) {
+  @if $breakpoint==sm {
+    @media (max-width: $breakpoint-sm) {
+      @content;
+    }
+  }
+
+  @else if $breakpoint==md {
+    @media (max-width: $breakpoint-md) {
+      @content;
+    }
+  }
+
+  @else if $breakpoint==lg {
+    @media (max-width: $breakpoint-lg) {
+      @content;
+    }
+  }
+
+  @else if $breakpoint==xl {
+    @media (max-width: $breakpoint-xl) {
+      @content;
+    }
+  }
+}

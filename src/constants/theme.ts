@@ -1,0 +1,1 @@
+export const THEMES: string[] = ['light', 'dark']

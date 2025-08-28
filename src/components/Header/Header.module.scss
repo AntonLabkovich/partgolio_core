@@ -1,0 +1,9 @@
+@use "@/styles/mixins"as m;
+
+.header{
+    @include m.flex-center;
+    .nav{
+        flex: 1; 
+        @include m.flex-center;
+    }
+}
