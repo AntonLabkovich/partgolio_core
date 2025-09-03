@@ -3,13 +3,15 @@ import type { ThemeState } from "../../store/themeStore";
 import styles from "./ToggleMode.module.scss";
 import cn from 'classnames'
 import gsap from "gsap"
-import TurnOn from "../svgIcons/TurnOn/TurnOn";
-import TurnOff from "../svgIcons/TurnOff/TurnOff";
+import TurnOn from "../../assets/images/toggleIcons/light-switch-off.svg?react";
+import TurnOff from "../../assets/images/toggleIcons/light-switch-off.svg?react";
 import { MorphSVGPlugin } from "gsap/MorphSVGPlugin";
 
-gsap.registerPlugin(MorphSVGPlugin)
+
 
 const ToggleMode: React.FC<ThemeState> = ({ theme, setTheme }) => {
+  gsap.registerPlugin(MorphSVGPlugin)
+
   const toggleModeClasses = cn([styles.toggleModeContainer])
   const turnOnClass = styles.turnOn
   const turnOffClass = styles.turnOff
