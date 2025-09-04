@@ -1,28 +1,19 @@
-
 import { create } from "zustand";
-import { THEMES } from "../constants/theme";
-
-export type Theme = (typeof THEMES)[number];
 
 export interface ThemeState {
-    theme: Theme;
-    setTheme: (theme: Theme) => void;
+    isDarkMode: boolean;
+    setDarkMode: (value: boolean) => void;
 }
 
-const getInitialTheme = (): Theme => {
-    const storedTheme = localStorage.getItem("theme") as Theme | null;
-    return storedTheme && THEMES.includes(storedTheme) ? storedTheme : THEMES[0];
+const getInitialTheme = (): boolean => {
+    const storedTheme = localStorage.getItem("isDarkMode");
+    return storedTheme === "true"; // по умолчанию false, если ничего нет
 };
 
-
 export const useThemeStore = create<ThemeState>((set) => ({
-    theme: getInitialTheme(),
-    setTheme: (theme: Theme) => {
-        if (!THEMES.includes(theme)) {
-            console.warn(`Theme "${theme}" is not in the THEMES list.`);
-            return;
-        }
-        localStorage.setItem("theme", theme);
-        set({ theme });
+    isDarkMode: getInitialTheme(),
+    setDarkMode: (value: boolean) => {
+        localStorage.setItem("isDarkMode", value.toString());
+        set({ isDarkMode: value });
     },
 }));

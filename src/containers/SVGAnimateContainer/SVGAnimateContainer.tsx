@@ -1,51 +1,42 @@
-import { useLayoutEffect } from "react";
-import type { ThemeState } from "../../store/themeStore";
-import styles from "./ToggleMode.module.scss";
-import cn from 'classnames'
+import { useLayoutEffect, useState, useMemo } from "react";
+import styles from "./SVGAnimateContainer.module.scss";
 import gsap from "gsap"
-import TurnOn from "../../assets/images/toggleIcons/light-switch-off.svg?react";
-import TurnOff from "../../assets/images/toggleIcons/light-switch-off.svg?react";
+import type { MorphSwitchProps } from "../../interfaces/svgInterfaces";
+import { defaultTween } from "../../constants/theme";
 import { MorphSVGPlugin } from "gsap/MorphSVGPlugin";
 
 
 
-const ToggleMode: React.FC<ThemeState> = ({ theme, setTheme }) => {
+const SVGAnimateContainer: React.FC<MorphSwitchProps> = ({ SVGFrom, SVGTo, animationFrom, animationTo }) => {
+  const [flag, setFlag] = useState(false);
+
+  const animFrom = useMemo(() => ({ ...defaultTween, ...(animationFrom ?? {}) }), [animationFrom]);
+  const animTo = useMemo(() => ({ ...defaultTween, ...(animationTo ?? {}) }), [animationTo]);
+
   gsap.registerPlugin(MorphSVGPlugin)
 
-  const toggleModeClasses = cn([styles.toggleModeContainer])
-  const turnOnClass = styles.turnOn
-  const turnOffClass = styles.turnOff
 
   useLayoutEffect(() => {
+    console.log(flag, 'flag')
     const ctx = gsap.context(() => {
-      const turnOnPath = `.${turnOnClass} path`;
-      const turnOffPath = `.${turnOffClass} path`;
-      console.log(turnOnPath, 'turnOnPath')
-      if (theme === "light") {
-        gsap.to(turnOffPath, {
-          duration: 0.2,
-          morphSVG: turnOnPath,
-          ease: "power2.inOut"
-        });
+      const turnFromPath = `.${styles.iconFrom} path`;
+      const turnToPath = `.${styles.iconTo} path`;
+
+      if (flag) {
+        gsap.to(turnFromPath, { morphSVG: turnToPath, ...animFrom });
       } else {
-        gsap.to(turnOnPath, {
-          duration: 0.2,
-          morphSVG: turnOffPath,
-          ease: "power2.inOut"
-        });
+        gsap.to(turnToPath, { morphSVG: turnFromPath, ...animTo });
       }
     });
 
     return () => ctx.revert();
-  }, [theme]);
+  }, [flag, animFrom, animTo]);
 
   return (
-    <div className={toggleModeClasses} onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}>
-      {theme === 'light' ? <TurnOff className={turnOffClass} /> : <TurnOn className={turnOnClass} />}
-
-
+    <div className={styles.iconContainer} onClick={() => setFlag(!flag)}>
+      {flag ? <SVGFrom className={styles.iconFrom} /> : <SVGTo className={styles.iconTo} />}
     </div>
   );
 };
 
-export default ToggleMode;
+export default SVGAnimateContainer;

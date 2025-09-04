@@ -1,18 +1,19 @@
 import { useEffect } from "react";
-import { useThemeStore } from "../store/themeStore"; // пример Zustand
+import { useThemeStore } from "../store/themeStore";
 
 const ThemeController =() => {
-  const theme = useThemeStore(state => state.theme); // "light" | "dark"
+  const theme = useThemeStore(state => state.isDarkMode);
+  console.log(theme, 'theme')
 
   useEffect(() => {
-    if (theme === "dark") {
+    if (theme) {
       document.body.classList.add("dark-mode");
     } else {
       document.body.classList.remove("dark-mode");
     }
   }, [theme]);
 
-  return null; // компонент не рендерит ничего
+  return null; 
 }
 
 export default ThemeController;

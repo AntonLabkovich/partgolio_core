@@ -1,17 +1,11 @@
-@use "@/styles/mixins" as m;
+@use "@/styles/mixins"as m;
 
-.toggleModeContainer {
-    width: 50px;
-    height: 50px;
+.iconContainer {
     position: relative;
-    cursor: pointer;
-}
+    @include m.size(100%, 100%);
 
-.turnOn,
-.turnOff {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
+    & .iconFrom,
+    & .iconTo {
+        @include m.svgAnimate;
+    }
 }
