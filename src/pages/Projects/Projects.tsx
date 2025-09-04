@@ -3,7 +3,7 @@ import styles from "./Projects.module.scss";
 
 const Projects = () => {
   return (
-    <div className={styles.page}>
+    <div className={styles.pageProjects}>
       <ContainerGallery/>
     </div>
   );
