@@ -3,7 +3,7 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
 
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box
@@ -17,8 +17,14 @@ body {
     min-height: 100vh;
     margin: 0;
     padding: 20px;
-  }
+    position: relative;
+}
 
 body.dark-mode {
     @include m.theme(dark);
+}
+
+main {
+    @include m.flex-center;
+    width: 100%;
 }
